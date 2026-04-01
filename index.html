@@ -58,19 +58,21 @@
   }
   </script>
 
-    <link href="https://db.onlinewebfonts.com/c/1b3f9cb78376a36884f3908f37a42c91?family=Tiempos+Text+Regular"
-        rel="stylesheet">
+    <!-- Preload Anthropic Sans font for faster loading -->
+    <link rel="preload" as="font"
+        href="https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/69971989be3c6573c3128fd9_AnthropicSans-Roman-Web.woff2"
+        type="font/woff2" crossorigin>
+
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         @font-face {
-            font-family: "Tiempos Text Regular";
-            src: url("https://db.onlinewebfonts.com/t/1b3f9cb78376a36884f3908f37a42c91.eot");
-            src: url("https://db.onlinewebfonts.com/t/1b3f9cb78376a36884f3908f37a42c91.eot?#iefix") format("embedded-opentype"),
-                url("https://db.onlinewebfonts.com/t/1b3f9cb78376a36884f3908f37a42c91.woff2") format("woff2"),
-                url("https://db.onlinewebfonts.com/t/1b3f9cb78376a36884f3908f37a42c91.woff") format("woff"),
-                url("https://db.onlinewebfonts.com/t/1b3f9cb78376a36884f3908f37a42c91.ttf") format("truetype"),
-                url("https://db.onlinewebfonts.com/t/1b3f9cb78376a36884f3908f37a42c91.svg#Tiempos Text Regular") format("svg");
+            font-family: "Anthropic Sans";
+            src: url("https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/69971989be3c6573c3128fd9_AnthropicSans-Roman-Web.woff2") format("woff2");
+            font-weight: 300 800;
+            font-style: normal;
+            font-display: swap;
         }
 
         *,
@@ -88,8 +90,8 @@
             --border-dark: #c8c2b6;
             --accent: #c5490a;
             --radius: 6px;
-            --font-serif: "Tiempos Text Regular", ui-serif, Georgia, Cambria, "Times New Roman", serif;
-            --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --font-serif: "Anthropic Sans", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+            --font-sans: "Anthropic Sans", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         html,
@@ -108,6 +110,15 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+        }
+
+        /* Font loading states */
+        body.fonts-loading {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body.fonts-loaded {
+            font-family: var(--font-sans);
         }
 
         /* HERO SECTION - CENTERED */
@@ -320,6 +331,18 @@
     </section>
 
     <script>
+        // Font loading optimization with loading states
+        if ('fonts' in document) {
+            document.documentElement.classList.add('fonts-loading');
+
+            document.fonts.load('400 1em Anthropic Sans').then(() => {
+                document.documentElement.classList.remove('fonts-loading');
+                document.documentElement.classList.add('fonts-loaded');
+            }).catch(() => {
+                document.documentElement.classList.remove('fonts-loading');
+            });
+        }
+
         // Initialize Lucide icons
         lucide.createIcons();
     </script>
